@@ -28,5 +28,6 @@
    
     <module>huiju</module>
     <module>web1</module>
+    <module>smvc1</module>
   </modules>
 </project>
