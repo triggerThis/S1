@@ -1,0 +1,5 @@
+javax.servlet.http.HttpServlet" was not found on the Java Build Path
+1、右击web工程-》属性或Build Path-》Java Build Path->Libraries-> Add Libray...->Server Runtime -》Tomcat Server
+2、切换到Java Build Path界面中的Orader and Export，选择Tomcat。
+
+<%@ page contentType="text/html; charset=utf8"  import="com.lqSite1.*" errorPage="./error.jsp" %>
