@@ -1,0 +1,28 @@
+
+
+
+public interface UserDao {
+ void save(); // save(pojo p)
+}
+
+
+PojoDaoImpl implements PojoDao(){
+	//from interface
+	public void save() // save(pojo p)
+}
+
+
+@Test
+public void base() {
+	ApplicationContext ctx = new
+	ClassPathXmlApplicationContext("beans.xml");  配置文件beans.xml 获取所需要的实例对象。
+	//<bean id="userDaoImpl" class="com.asm.dao.impl.UserDaoImpl" />	
+	UserDao userDao = (UserDao) ctx.getBean("userDaoImpl");
+	userDao.save();
+}
+
+1.上面用了类直接生成方式，
+还有bean 静态工厂及bean 实例工厂
+
+注解式
+

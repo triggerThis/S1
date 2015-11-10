@@ -23,28 +23,28 @@ sLog
 sTransaction
 
 //DataType
-private Integer dTypeInt
-private String  dTypeString
-private String  dTypeDate
-private String  dTypeImage
-private String  dTypeBin
-private String  dTypeFloat
-private String  
-private String  dbId
-private String  dbSequence
-private String  dbName
-private String  dbText
-private String  dbFkInt
-private String  dbFkSequence
-private String  dbFkString
-private String  
-private String  busiName
-private String  busiValue
-private String  busiBtime
-private String  busiEtime
-private String  
-private String  sLog
-private String  sTransaction
+    private Integer dTypeInt;
+    private String  dTypeString;
+    private String  dTypeDate;
+    private String  dTypeImage;
+    private String  dTypeBin;
+    private String  dTypeFloat;
+    
+    private String  dbId;
+    private String  dbSequence;
+    private String  dbName;
+    private String  dbText;
+    private String  dbFkInt;
+    private String  dbFkSequence;
+    private String  dbFkString;
+    
+    private String  busiName;
+    private String  busiValue;
+    private String  busiBtime;
+    private String  busiEtime;
+    
+    private String  sLog;
+    private String  sTransaction;
 
 	private Integer id;
     private String  sname;
