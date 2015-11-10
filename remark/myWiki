@@ -1,0 +1,9 @@
+Atomikos是目前在分布式事务管理中做得相当不错的开源软件。有10年以上的经验，Atomikos保障您的关键事务和
+防止昂贵的数据丢失在发生系统故障或事故中．Atomikos支持XA(全局事务)和NON-XA(非全局事务)，NON-XA效率高于XA。
+本文主要是讲XA事件，因为要在不同的数据库中操作多张表。
+
+http://www.cnblogs.com/linjiqin/p/3533344.html
+
+1.通俗系列
+Spring AOP概念理解 （通俗易懂）
+http://m.baidu.com/from=1000950i/ssid=1e35947e/bd_page_type=1/uid=0/pu=sz%401320_1001%2Cta%40iphone_2_4.4_3_537/baiduid=1EE0DD3F51DB77689543E9BCAEDCA676/w=0_10_aop+原理通俗易懂的原理/t=iphone/l=3/tc?ref=www_iphone&lid=15614257281422238047&order=1&vit=osres&tj=www_normal_1_0_10_title&m=8&srd=1&cltj=cloud_title&dict=30&title=SpringAOP概念理解%28通俗易懂%29&sec=7772&di=a941d2cfdbe61bb1&bdenc=1&tch=124.299.261.161.5.2220&nsrc=IlPT2AEptyoA_yixCFOxXnANedT62v3IEQGG_zhVAC3qmECsxP4kHREsRDPqLXSdIJShd-7Hsx52w83-RyJrlK
