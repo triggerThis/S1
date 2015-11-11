@@ -1,0 +1,5 @@
+add maven compile in submodule smvc1
+automikos in smvc1 need to be , and we can access 
+http://stackoverflow.com/questions/1368806/atomikos-jetty-in-a-maven-build-environment-classloader-issue
+change maven project management to grale for easy, clearly build
+class是扁平化的, 在多模块构建时, 要防止重复引入包且包的版本不同而导致的classnofound ,classException

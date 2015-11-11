@@ -3,7 +3,32 @@ Atomikos是目前在分布式事务管理中做得相当不错的开源软件。
 本文主要是讲XA事件，因为要在不同的数据库中操作多张表。
 
 http://www.cnblogs.com/linjiqin/p/3533344.html
-
+首先理论要还是按经典教程来
+spring 所有知识点应是通俗的,其实通俗与业务分析的接地气是有紧要关系的. 
 1.通俗系列
 Spring AOP概念理解 （通俗易懂）
 http://m.baidu.com/from=1000950i/ssid=1e35947e/bd_page_type=1/uid=0/pu=sz%401320_1001%2Cta%40iphone_2_4.4_3_537/baiduid=1EE0DD3F51DB77689543E9BCAEDCA676/w=0_10_aop+原理通俗易懂的原理/t=iphone/l=3/tc?ref=www_iphone&lid=15614257281422238047&order=1&vit=osres&tj=www_normal_1_0_10_title&m=8&srd=1&cltj=cloud_title&dict=30&title=SpringAOP概念理解%28通俗易懂%29&sec=7772&di=a941d2cfdbe61bb1&bdenc=1&tch=124.299.261.161.5.2220&nsrc=IlPT2AEptyoA_yixCFOxXnANedT62v3IEQGG_zhVAC3qmECsxP4kHREsRDPqLXSdIJShd-7Hsx52w83-RyJrlK
+
+你的一个类里，有15个方法，那就有几十个连接点了对把
+
+在有了Adive , JointPoint两个概念后,
+Aspect就好理解了
+
+思路大纲
+
+
+面试应对
+还是能照本宣科就照网上的来
+
+理论
+兄弟模式 
+父子模式
+
+织入与委托
+
+spring会使用JDK的java.lang.reflect.Proxy类，
+它允许Spring动态生成一个新类来实现必要的接口，织入通知，并且把对这些接口的任何调用都转发到目标类。
+
+--要素补充: 1. 目标类 子类
+
+

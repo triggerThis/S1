@@ -24,10 +24,11 @@
   </dependencies>
   <modules>
   	<module>dao</module>
-	<module>hbm</module>
-   
+	<module>hbm</module>   
     <module>huiju</module>
     <module>web1</module>
     <module>smvc1</module>
+    <module>typePojo</module>
+    <module>spr-mvc-hib</module>
   </modules>
 </project>

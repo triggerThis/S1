@@ -1,5 +1,205 @@
+http://hanqunfeng.iteye.com/blog/2121427
+
 javax.servlet.http.HttpServlet" was not found on the Java Build Path
 1、右击web工程-》属性或Build Path-》Java Build Path->Libraries-> Add Libray...->Server Runtime -》Tomcat Server
 2、切换到Java Build Path界面中的Orader and Export，选择Tomcat。
 
 <%@ page contentType="text/html; charset=utf8"  import="com.lqSite1.*" errorPage="./error.jsp" %>
+
+Spring4+Hibernate4+Atomikos3.3多数据源事务管理
+
+博客分类： SpringAtomikos
+
+Spring3+后不再对JTOM提供支持，所以可以改用Atomikos管理多数据源事务。
+Spring2.5+Hibernate3+JTOM参考：http://hanqunfeng.iteye.com/blog/1554251
+
+Atomikos官网网站：http://www.atomikos.com/   
+
+一.pom.xml
+Xml代码  收藏代码
+<dependency>  
+            <groupId>com.atomikos</groupId>  
+            <artifactId>transactions-jdbc</artifactId>  
+            <version>3.9.3</version>  
+        </dependency>  
+ 
+
+二.applicationContext-atomikos.xml
+Xml代码  收藏代码
+<bean class="com.atomikos.jdbc.AtomikosDataSourceBean" init-method="init" destroy-method="close" id="dataSource01">  
+        <!-- Set unique name for this DataSource -->    
+        <property name="uniqueResourceName"><value>oracle</value></property>  
+        <!-- Set XADatasource class name -->    
+        <property name="xaDataSourceClassName" value="oracle.jdbc.xa.client.OracleXADataSource" />  
+               
+        <property name="xaProperties">  
+            <props>  
+                <prop key="user">${jdbc.username01}</prop>  
+                <prop key="password">${jdbc.password01}</prop>  
+                <prop key="URL">${jdbc.url01}</prop>  
+            </props>  
+        </property>   
+        <!-- set properties for datasource connection pool -->    
+        <property name="poolSize" value="3" />  
+        <!-- timeout after 20000 seconds -->  
+        <property name="reapTimeout"><value>20000</value></property>    
+    </bean>  
+      
+     
+   
+      
+      
+    <bean id="sessionFactory01"  
+        class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">  
+        <property name="dataSource" ref="dataSource01" />  
+        <property name="packagesToScan">  
+            <list>  
+                <value>com.cpframework.function.**.model.oracle</value>  
+            </list>  
+        </property>  
+        <property name="hibernateProperties">  
+            <props>  
+                <prop key="hibernate.dialect">  
+                    org.hibernate.dialect.Oracle10gDialect  
+                </prop>  
+                <prop key="hibernate.show_sql">true</prop>  
+                <prop key="hibernate.current_session_context_class">jta</prop>  
+                <prop key="hibernate.transaction.factory_class">org.hibernate.transaction.JTATransactionFactory</prop>  
+            </props>  
+        </property>  
+    </bean>  
+  
+  
+    <!-- oracleDAO -->  
+    <bean id="hibernateDAO01" class="org.cpframework.dao.hibernate4.CP_Hibernate4DAOImpl">  
+      <property name="sessionFactory" ref="sessionFactory01"></property>  
+    </bean>  
+      
+      
+      
+    <bean class="com.atomikos.jdbc.AtomikosDataSourceBean" init-method="init" destroy-method="close" id="dataSource02">  
+        <!-- Set unique name for this DataSource -->    
+        <property name="uniqueResourceName"><value>mysql</value></property>  
+        <!-- Set XADatasource class name -->  
+        <property name="xaDataSourceClassName" value="com.mysql.jdbc.jdbc2.optional.MysqlXADataSource" />  
+          
+        <property name="xaProperties">  
+            <props>  
+                <prop key="user">${jdbc.username02}</prop>  
+                <prop key="password">${jdbc.password02}</prop>  
+                <prop key="URL">${jdbc.url02}</prop>  
+            </props>  
+        </property>   
+        <!-- set properties for datasource connection pool -->    
+        <property name="poolSize" value="3" />  
+         
+        <property name="reapTimeout"><value>20000</value></property>    
+    </bean>  
+      
+    
+      
+      
+      
+    <bean id="sessionFactory02"  
+        class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">  
+        <property name="dataSource" ref="dataSource02" />  
+        <property name="packagesToScan">  
+            <list>  
+                <value>com.cpframework.function.**.model.mysql</value>  
+            </list>  
+        </property>  
+        <property name="hibernateProperties">  
+            <props>  
+                <prop key="hibernate.dialect">  
+                    org.hibernate.dialect.MySQLDialect  
+                </prop>  
+                <prop key="hibernate.show_sql">true</prop>  
+                <prop key="hibernate.current_session_context_class">jta</prop>  
+                <prop key="hibernate.transaction.factory_class">org.hibernate.transaction.JTATransactionFactory</prop>  
+            </props>  
+        </property>  
+    </bean>  
+  
+  
+    <!-- mysqlDAO -->  
+    <bean id="hibernateDAO02" class="org.cpframework.dao.hibernate4.CP_Hibernate4DAOImpl">  
+      <property name="sessionFactory" ref="sessionFactory02"></property>  
+    </bean>  
+      
+   
+    <!-- atomikos事务管理器 -->  
+    <bean id="atomikosTransactionManager" class="com.atomikos.icatch.jta.UserTransactionManager"   
+        init-method="init" destroy-method="close">  
+        <description>UserTransactionManager</description>    
+        <property name="forceShutdown">  
+            <value>true</value>  
+        </property>  
+    </bean>  
+  
+    <bean id="atomikosUserTransaction" class="com.atomikos.icatch.jta.UserTransactionImp">  
+        <property name="transactionTimeout" value="300" />  
+    </bean>  
+          
+    <!-- spring 事务管理器 -->  
+    <bean id="transactionManager"  
+        class="org.springframework.transaction.jta.JtaTransactionManager">  
+        <property name="transactionManager" ref="atomikosTransactionManager"/>  
+        <property name="userTransaction" ref="atomikosUserTransaction" />  
+        <property name="allowCustomIsolationLevels" value="true"/>   
+    </bean>  
+  
+ <aop:config proxy-target-class="true">  
+        <aop:pointcut id="servicePoint"  
+            expression="execution (* com.cpframework.function.*.service.*.*Service*.*(..))" />  
+        <aop:advisor pointcut-ref="servicePoint" id="txAdvisor"  
+            advice-ref="defaultTxAdvice" />  
+    </aop:config>  
+  
+  <tx:advice id="defaultTxAdvice" transaction-manager="transactionManager">  
+        <tx:attributes>  
+            <tx:method name="find*" read-only="true" />  
+            <tx:method name="get*" read-only="true" />  
+            <tx:method name="query*" read-only="true" />  
+            <tx:method name="load*" read-only="true" />  
+            <tx:method name="add*" propagation="REQUIRED" rollback-for="java.lang.Exception" />  
+            <tx:method name="create*" propagation="REQUIRED"  
+                rollback-for="java.lang.Exception" />  
+            <tx:method name="save*" propagation="REQUIRED"  
+                rollback-for="java.lang.Exception" />  
+            <tx:method name="update*" propagation="REQUIRED"  
+                rollback-for="java.lang.Exception" />  
+            <tx:method name="modify*" propagation="REQUIRED"  
+                rollback-for="java.lang.Exception" />  
+            <tx:method name="delete*" propagation="REQUIRED"  
+                rollback-for="java.lang.Exception" />  
+            <tx:method name="remove*" propagation="REQUIRED"  
+                rollback-for="java.lang.Exception" />  
+            <tx:method name="apply*" propagation="REQUIRED"  
+                rollback-for="java.lang.Exception" />  
+            <tx:method name="handle*" propagation="REQUIRED"  
+                rollback-for="java.lang.Exception" />  
+                <tx:method name="do*" propagation="REQUIRED"  
+                rollback-for="java.lang.Exception" />  
+        </tx:attributes>  
+    </tx:advice>  
+ 
+
+
+三.transactions.properties
+将transactions.properties文件放到编译根路径下，可根据需要开启相关注解，参见附件。
+
+四.CP_Hibernate4DAOImpl
+需要注意两点：
+1.session必须使用sessionFactory.openSession()的方式获得，不能使用sessionFactory.getCurrentSession()。
+2.更新操作必须调用session.flush()方法。
+例如：
+Java代码  收藏代码
+public void update(Object entity) {  
+Session session = sessionFactory.openSession();  
+session.update(entity);  
+session.flush();  
+}  
+ 
+
+参考：
+http://www.liferay.com/zh/community/wiki/-/wiki/Main/JTA-XA+on+Tomcat/pop_up?controlPanelCategory=portlet_36
