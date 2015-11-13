@@ -1,4 +1,4 @@
-package com.sprhib.model;
+package com.sprhib.model;//
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

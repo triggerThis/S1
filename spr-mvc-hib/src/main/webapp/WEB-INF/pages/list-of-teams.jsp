@@ -8,7 +8,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
-<title>List of teams</title>
+<title>List of teams v1</title>
 </head>
 <body>
 <h1>List of teams</h1>

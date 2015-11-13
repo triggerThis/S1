@@ -35,7 +35,7 @@ public class WebAppConfig {
     private static final String PROPERTY_NAME_ENTITYMANAGER_PACKAGES_TO_SCAN = "entitymanager.packages.to.scan";
     
 	@Resource
-	private Environment env;
+	private Environment env;//
 	
 	@Bean
 	public DataSource dataSource() {

@@ -13,7 +13,7 @@
 	</properties>
 
 	<dependencies>
-		<!-- DB related dependencies -->
+		<!-- DB related dependencies  a-->
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
