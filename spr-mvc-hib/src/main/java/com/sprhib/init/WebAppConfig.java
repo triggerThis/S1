@@ -80,5 +80,7 @@ public class WebAppConfig {
 		resolver.setViewClass(JstlView.class);
 		return resolver;
 	}
+	
+	
 
 }

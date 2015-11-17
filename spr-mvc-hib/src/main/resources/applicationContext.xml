@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:util="http://www.springframework.org/schema/util" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:tool="http://www.springframework.org/schema/tool" xmlns:cache="http://www.springframework.org/schema/cache"
+	xsi:schemaLocation="
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+			http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.2.xsd
+			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
+			http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd
+			http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+			http://www.springframework.org/schema/tool http://www.springframework.org/schema/tool/spring-tool-3.2.xsd
+			http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache-3.2.xsd" default-lazy-init="true">    
+	<description>Spring公共配置文件</description>
+	
+	<!-- properties -->
+	<bean id="springConfig" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" lazy-init="false">   
+	    <property name="locations">
+	    	<list>
+	    		<value>classpath:config_db.properties</value>
+	    	</list>
+	    </property>
+	</bean>
+	<!-- 连接池 -->
+	 <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName"><value>${jdbc.driverClassName}</value></property>
+  		<property name="url"><value>${jdbc.url}</value></property>
+  		<property name="username"><value>${jdbc.username}</value></property>
+  		<property name="password"><value>${jdbc.password}</value></property>
+		<!-- 初始化连接 -->
+		<property name="initialSize"><value>${jdbc.initialSize}</value></property>
+		<!-- 最大空闲连接 -->
+		<property name="maxIdle"><value>${jdbc.maxIdle}</value></property>
+		<!-- 最小空闲连接 -->
+		<property name="minIdle"><value>${jdbc.minIdle}</value></property>
+		<!-- 最大连接数量 -->
+		<property name="maxActive"><value>${jdbc.maxActive}</value></property>
+		<!-- 是否自动回收超时连接 -->
+		<property name="removeAbandoned"><value>${jdbc.removeAbandoned}</value></property>
+		<!-- 超时没有使用的活动连接,清理后并没有放回连接池(以秒数为单位) -->
+		<property name="removeAbandonedTimeout"><value>${jdbc.removeAbandonedTimeout}</value></property>
+	    <!-- 超时等待时间以毫秒为单位-->
+		<property name="maxWait"><value>${jdbc.maxWait}</value></property>
+		<!-- 空闲时是否验证, 若不通过断掉连接, 前提是空闲对象回收器开启状态-->
+		<property name="testWhileIdle"><value>${jdbc.testWhileIdle}</value></property>
+		 <!-- 在空闲连接回收器线程运行期间休眠的时间值,以毫秒为单位. 如果设置为非正数,则不运行空闲连接回收器线程-->
+		<property name="timeBetweenEvictionRunsMillis"><value>${jdbc.timeBetweenEvictionRunsMillis}</value></property>
+		 <!-- 在每次空闲连接回收器线程(如果有)运行时检查的连接数量-->
+		<property name="numTestsPerEvictionRun"><value>${jdbc.numTestsPerEvictionRun}</value></property>
+		 <!-- SQL查询,用来验证从连接池取出的连接,在将连接返回给调用者之前-->
+		<property name="validationQuery"><value>${jdbc.validationQuery}</value></property>
+   </bean>
+	<!-- 事务Transaction manager for a single Hibernate SessionFactory (alternative to JTA) -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource">
+			<ref local="dataSource" />
+		</property>
+	</bean>
+	<!--事务自动代理-->
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="get*" propagation="REQUIRED" read-only="true" />
+	        <tx:method name="*" propagation="REQUIRED" />
+		</tx:attributes>
+	</tx:advice>
+	<aop:config proxy-target-class="false">
+		<aop:pointcut id="pointcut" expression="execution(* com.sunbird.*.service.*.*(..))" />
+	    <aop:advisor advice-ref="txAdvice" pointcut-ref="pointcut" />
+	</aop:config>
+	<!--       DAO        -->
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" > 
+   			<ref local="dataSource"/> 
+		</property>
+	</bean>
+	 
+</beans>
