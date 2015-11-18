@@ -13,6 +13,8 @@ public class Initializer implements WebApplicationInitializer {
 
 	public void onStartup(ServletContext servletContext)
 			throws ServletException {
+		System.out.println("=============== [mainPage/");
+		
 		AnnotationConfigWebApplicationContext ctx = new AnnotationConfigWebApplicationContext();
 		ctx.register(WebAppConfig.class);
 		servletContext.addListener(new ContextLoaderListener(ctx));
@@ -22,6 +24,8 @@ public class Initializer implements WebApplicationInitializer {
 		Dynamic servlet = servletContext.addServlet("dispatcher", new DispatcherServlet(ctx));
 		servlet.addMapping("/");
 		servlet.setLoadOnStartup(1);
+		System.out.println("=============== [mainPage/end start");
 	}
+	//
 
 }

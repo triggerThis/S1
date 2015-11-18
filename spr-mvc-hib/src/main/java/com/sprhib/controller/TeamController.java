@@ -25,6 +25,7 @@ public class TeamController {
 		ModelAndView modelAndView = new ModelAndView("add-team-form");
 		modelAndView.addObject("team", new Team());
 		return modelAndView;
+		//
 	}
 	
 	@RequestMapping(value="/add", method=RequestMethod.POST)

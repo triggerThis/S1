@@ -33,6 +33,7 @@ public class TeamServiceImpl implements TeamService {
 	}
 
 	public List<Team> getTeams() {
+		System.out.println("Ç°ÖÃÍ¨Öª-getItem");
 		return teamDAO.getTeams();
 	}
 

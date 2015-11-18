@@ -14,7 +14,10 @@ public class LinkController {
 	
 	@RequestMapping(value="/")
 	public ModelAndView mainPage() {
+		
+		System.out.println("=============== [mainPage/azz");
 		return new ModelAndView("home");
+		
 	}
 	
 	@RequestMapping(value="/home")

@@ -1,8 +1,8 @@
 package com.sprhib.test;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -17,29 +17,29 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.sprhib.init.BaseTestConfig;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+//@RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(classes=BaseTestConfig.class)
 public class LinkControllerTest {
 	
-	@Autowired
+//	@Autowired
 	private WebApplicationContext wac;
 
 	private MockMvc mockMvc;
 	
-	@Before
+	//@Before
 	public void init() {
 		mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
 	}
 	
-	@Test
+	//@Test
 	public void testHomePage() throws Exception {
 		mockMvc.perform(get("/"))
 			.andExpect(status().isOk())
 			.andExpect(view().name("home"));
 	}
 	
-	@Test
+	//@Test
 	public void testIndexPage() throws Exception {
 		mockMvc.perform(get("/index.html"))
 			.andExpect(status().isOk())
