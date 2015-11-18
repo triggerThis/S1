@@ -77,9 +77,12 @@ public class WebAppConfig {
 		UrlBasedViewResolver resolver = new UrlBasedViewResolver();
 		resolver.setPrefix("/WEB-INF/pages/");
 		resolver.setSuffix(".jsp");
+		//resolver.setSuffix(".html");
 		resolver.setViewClass(JstlView.class);
 		return resolver;
 	}
+	
+	//other resolver
 	
 	
 
