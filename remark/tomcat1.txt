@@ -1,0 +1,32 @@
+这次项目开发，运行环境的tomcat版本从5.5.12升级到了6.0.18，发现以前的项目不能跑了，访问一个很简单的jsp也会报错，说无法编译，报的错误就是：Only a type can be imported. com.xxx.xxx.XXX resolves to a package，意思就是说你jsp页面上引用的那个类不存在，可是在老版本明明跑的好好的，而且另一个现象就是项目根目录下的jsp访问没有问题，子目录下就报错，google了一下，发现这是新版本tomcat的一个变化，就是如果不指定context的话，每一个子文件夹都会被tomcat当作一个独立的虚拟应用的，所以每个子文件夹下的jsp页面访问的时候，都会在它的同一层找WEB-INF里面的class，这样当然找不到了，只有刚巧放在根目录下的jsp文件能访问。
+
+解决办法：其实这也是自己以前写tomcat的配置文件时候，写法不规范造成的，以前的server.xml里面host信息代码如下：
+
+<Host name="www.local.com" appBase="D://projects//myWebSite//WebContent" unpackWARs="true" autoDeploy="true" xmlValidation="false" xmlNamespaceAware="false">
+    <Alias>192.168.1.43</Alias> 
+    <Context path="" docBase="" reloadable="true">
+     <Logger className="org.apache.catalina.logger.FileLogger" directory="logs" prefix="www.local.com_log." suffix=".txt" timestamp="true"/>
+    </Context></Host>
+
+这其中Context里面的docBase为空，文件路径就靠Host里的appBase去指定，这样tomcat认为你这个站点下没有应用，会自动把每个文件夹当作一个虚拟应用处理。修改后的代码片段如下：
+
+<Host name="www.local.com" appBase="" unpackWARs="true" autoDeploy="true" xmlValidation="false" xmlNamespaceAware="false">
+    <Alias>192.168.1.43</Alias> 
+    <Context path="" docBase="D://projects//myWebSite//WebContent" reloadable="true">
+     <Logger className="org.apache.catalina.logger.FileLogger" directory="logs" prefix="www.local.com_log." suffix=".txt" timestamp="true"/>
+    </Context></Host>
+
+可以看到Host里面不再指定appBase了，而是在主机下建立一个应用，应用的文件路径通过docBase来指定，这样就不会再产生找不到class的问题了。
+
+ps：tomcat的这个问题好像是从5.5.28就开始了，记得以前也曾经尝试过升级tomcat，就发生了类似的问题，但是当时没充裕时间去解决，就一直把问题遗留到现在。
+
+--class path,  root, package
+
+http://www.cnblogs.com/jifeng/archive/2012/10/17/2728690.html
+debug 说明
+//
+
+如果Eclipse的BuildPath里面不缺jar包并且在 ProjectProperties>>DeploymentAssembly里面定义的lib都包含齐全，
+那么有可能jar包没有被deploy到tomcat里面路径可能是:
+\WorkSpace\.metadata\.plugins\org.eclipse.wst.server.core\tmp1\wtpwebapps\ProjectNameXXX\WEB-INF\lib。
+手动将jar包扔进去可解决tomcat报"NoClassDefFoundError"错误。

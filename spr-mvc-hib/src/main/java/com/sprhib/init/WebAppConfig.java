@@ -8,7 +8,11 @@ import javax.sql.DataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate4.HibernateTransactionManager;
@@ -18,11 +22,18 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.view.JstlView;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
-@Configuration
+import com.sprhib.aspcectAop.DemoAop;
+
+
+@Configuration  //会去扫beans配置文件
 @ComponentScan("com.sprhib")
 @EnableWebMvc
 @EnableTransactionManagement
 @PropertySource("classpath:application.properties")
+@EnableAspectJAutoProxy 
+//@ImportResource("applicationContext.xml")
+//@ImportResource("classpath:applicationContext.xml")
+
 public class WebAppConfig {
 	
     private static final String PROPERTY_NAME_DATABASE_DRIVER = "db.driver";
@@ -84,6 +95,16 @@ public class WebAppConfig {
 	
 	//other resolver
 	
+	//@Bean
+//	 @Scope(value = "singleton", proxyMode = ScopedProxyMode.TARGET_CLASS)
+	//public DemoAop setupDemoAop() {
+		//System.out.println("create DemoAop in initializer");
+	//	DemoAop resolver = new DemoAop();		
+	//	return resolver;
+	//}
 	
+	 
+	
+	 
 
 }

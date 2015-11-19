@@ -33,7 +33,7 @@ public class TeamServiceImpl implements TeamService {
 	}
 
 	public List<Team> getTeams() {
-		System.out.println("前置通知-getItem");
+		//System.out.println("TeamServiceImpl 前置通知-getItem");
 		return teamDAO.getTeams();
 	}
 

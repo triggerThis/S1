@@ -27,15 +27,30 @@
 	-->
 <!-- Spring ApplicationContext配置文件的路径,可使用通配符,多个路径用逗号(,)分隔 此参数用于后面的Spring 
 		Context Loader -->
-	<context-param>
+		<!-- <context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
-			classpath*:applicationContext*.xml
-			classpath*:spring-mvc.xml
+		 classpath:applicationContext*.xml
+			classpath*:spring-mvc.xml 		
+			
 		</param-value>
 	</context-param>	
+<context-param>  
+    <param-name>contextConfigLocation</param-name>  
+    <param-value>/WEB-INF/applicationContext.xml,
+    	/WEB-INF/spring-mvc.xml,
+    	/WEB-INF/jason-servlet.xml</param-value>  
+</context-param>  
+-->	
+
+
+
 	
 	<!-- Spring ApplicationContext 载入
+	
+<listener>  
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>  
+</listener>  
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
